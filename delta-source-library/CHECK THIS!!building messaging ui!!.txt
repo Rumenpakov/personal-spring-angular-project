@@ -1,0 +1,3 @@
+flex-none i vsichkite ot toq sort flex-auto
+justify-content i align items moje da align-ne vsichko det iskame vuv flexbox
+flex na div i w-stoinosta koqto iskam na decata, flex-auto za da zapulnq vs koeto imam do kraq na flexboxa

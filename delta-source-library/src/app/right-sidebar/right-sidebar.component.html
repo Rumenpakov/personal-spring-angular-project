@@ -1,0 +1,19 @@
+<div class="flex-none w-60 p-6 overflow-y-auto journal-scroll hidden md:block">
+  <!--Container for Categories and About us-->
+  <div class="justify-center items-end space-y-6 overflow-y-auto">
+
+    <!--Categories-->
+    <div class="h-full w-full overflow-y-auto">
+      <div class="justify-center items-end overflow-y-auto">
+        <div class="flex flex-col justify-center items-end overflow-y-auto">
+          <h2 class="text-gray-900 text-3xl uppercase font-light font-sans">Categories</h2>
+          <app-category *ngFor="let category of categories()" [category]="category"></app-category>
+        </div>
+      </div>
+    </div>
+    <!--Chips begin-->
+    <div class="flex flex-wrap items-end w-full">
+      <app-chips *ngFor="let chip of sharedInfo.chips" [category]="chip"></app-chips>
+    </div>
+  </div>
+</div>

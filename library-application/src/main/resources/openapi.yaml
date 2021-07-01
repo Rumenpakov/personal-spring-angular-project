@@ -1,0 +1,432 @@
+openapi: 3.0.1
+info:
+  title: Library api
+  description: Api for interactions with library
+  version: "0.1"
+servers:
+  - url: http://localhost:8080
+    description: Generated server url
+paths:
+  /books/paper-book/add:
+    post:
+      tags:
+        - book-controller
+      operationId: postPaperBookInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaperBookInfo'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaperBookInfo'
+  /books/e-book/add:
+    post:
+      tags:
+        - book-controller
+      operationId: postEBookInfo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EBookInfo'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EBookInfo'
+  /user-books/return/{isbn}:
+    get:
+      tags:
+        - user-books-controller
+      operationId: returnBookByIsbnController
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BorrowedBook'
+  /user-books/read-online/{isbn}:
+    get:
+      tags:
+        - user-books-controller
+      operationId: readOnlineEBookByIsbn
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UsedBook'
+  /user-books/find-borrowed/{isbn}:
+    get:
+      tags:
+        - user-books-controller
+      operationId: findBorrowedBookByIsbnController
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UsedBook'
+  /user-books/download/{isbn}:
+    get:
+      tags:
+        - user-books-controller
+      operationId: downloadEBookByIsbn
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UsedBook'
+  /user-books/borrow-book/{isbn}:
+    get:
+      tags:
+        - user-books-controller
+      operationId: tryToBorrowBookByIsbn
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                enum:
+                  - SUCCESSFUL
+                  - IN_QUEUE
+  /session/logout:
+    get:
+      tags:
+        - login-controller
+      operationId: logOutController
+      responses:
+        "200":
+          description: OK
+  /session/login:
+    get:
+      tags:
+        - login-controller
+      operationId: logInController
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+  /books/paper-book/{isbn}:
+    get:
+      tags:
+        - book-controller
+      operationId: getPaperBookInfoByIsbn
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PaperBookInfo'
+  /books/paper-book/all:
+    get:
+      tags:
+        - book-controller
+      operationId: getAllPaperBooks
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /books/e-book/{isbn}:
+    get:
+      tags:
+        - book-controller
+      operationId: getEBookInfoByIsbn
+      parameters:
+        - name: isbn
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EBookInfo'
+  /books/e-book/all:
+    get:
+      tags:
+        - book-controller
+      operationId: getAllEBooks
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    AccountCredentials:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Author:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        country:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        dateOfDeath:
+          type: string
+          format: date
+    Book:
+      type: object
+      properties:
+        title:
+          type: string
+        authors:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+        genre:
+          type: string
+          enum:
+            - HORROR
+            - ROMANTIC
+            - SCI_FI
+        shortSummary:
+          type: string
+        isbn:
+          type: string
+        tags:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+              - ROMANTIC
+              - GROSS
+              - LOVE
+    BookStatus:
+      type: object
+      properties:
+        bookUser:
+          $ref: '#/components/schemas/UserAccount'
+        lockedDate:
+          type: string
+          format: date
+        borrowDate:
+          type: string
+          format: date
+        borrowerDetails:
+          $ref: '#/components/schemas/UserAccount'
+        lockedForUser:
+          type: boolean
+        borrowed:
+          type: boolean
+        available:
+          type: boolean
+    Location:
+      type: object
+      properties:
+        address:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+    Name:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+    PaperBookInfo:
+      type: object
+      properties:
+        availableCopies:
+          type: integer
+          format: int32
+        statusOfBooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookStatus'
+        queueForBookBorrow:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserAccount'
+        book:
+          $ref: '#/components/schemas/Book'
+        currentDate:
+          type: string
+          format: date
+        isbn:
+          type: string
+    UsedBook:
+      type: object
+      properties:
+        book:
+          $ref: '#/components/schemas/Book'
+        acquireDate:
+          type: string
+          format: date
+        wayOfAcquisition:
+          type: string
+          enum:
+            - DOWNLOAD
+            - READ_ONLINE
+            - BORROW
+        isbn:
+          type: string
+    UserAccount:
+      type: object
+      properties:
+        userAccountDetails:
+          $ref: '#/components/schemas/UserAccountDetails'
+        userAccountHistory:
+          $ref: '#/components/schemas/UserAccountHistory'
+        notifications:
+          type: array
+          items:
+            type: string
+            enum:
+              - BOOK_RESERVED
+    UserAccountDetails:
+      type: object
+      properties:
+        age:
+          type: integer
+          format: int32
+        sex:
+          type: string
+          enum:
+            - MALE
+            - FEMALE
+        email:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        accountCredentials:
+          $ref: '#/components/schemas/AccountCredentials'
+        userName:
+          type: string
+    UserAccountHistory:
+      type: object
+      properties:
+        usedBooks:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/UsedBook'
+    AccessDetails:
+      type: object
+      properties:
+        readOnlineUrl:
+          type: string
+        downloadUrl:
+          type: string
+    EBookInfo:
+      type: object
+      properties:
+        accessDetails:
+          $ref: '#/components/schemas/AccessDetails'
+        book:
+          $ref: '#/components/schemas/Book'
+        downloadable:
+          type: boolean
+        isbn:
+          type: string
+        downloadLink:
+          type: string
+        readOnlineLink:
+          type: string
+    BorrowedBook:
+      type: object
+      properties:
+        book:
+          $ref: '#/components/schemas/Book'
+        acquireDate:
+          type: string
+          format: date
+        wayOfAcquisition:
+          type: string
+          enum:
+            - DOWNLOAD
+            - READ_ONLINE
+            - BORROW
+        returnDate:
+          type: string
+          format: date
+        postponeDays:
+          type: integer
+          format: int32
+        isbn:
+          type: string

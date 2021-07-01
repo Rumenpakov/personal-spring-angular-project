@@ -1,0 +1,42 @@
+<div
+  class="flex-auto h-full w-full p-4 pb-0 lg:gap-2 bg-gray-50 overflow-y-auto divide-y divide-gray-300">
+  <!--Book cards-->
+  <app-book-card (readMoreClick)="sharedInfo.readMoreClicked(book)"
+                 *ngFor="let book of sharedInfo.fetchedBooks" [book]=book
+                 class="p-4 rounded-sm mb-6 md:mb-0 flex flex-col justify-between cursor-pointer hover:bg-gray-100
+                  transition transition-colors" routerLink="/books/{{book.isbn}}"></app-book-card>
+  <!--Pagination-->
+  <div class="flex justify-center items-center col-span-1">
+    <nav aria-label="Page navigation">
+      <ul class="inline-flex space-x-2">
+        <li>
+          <button
+            (click)="pageBackward()"
+            [ngClass]="{'opacity-20': sharedInfo.isFirstPage}"
+            class="flex items-center justify-center w-14 h-14 text-gray-700 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-gray-200 focus:outline-none">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 20 20">
+              <path
+                clip-rule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                fill-rule="evenodd"></path>
+            </svg>
+          </button>
+        </li>
+
+        <li>
+          <button
+            (click)="pageForward()"
+            [ngClass]="{'opacity-20': sharedInfo.isLastPage}"
+            class="flex items-center justify-center w-14 h-14 text-gray-700 transition-colors duration-150 rounded-full focus:shadow-outline hover:bg-gray-200 focus:outline-none">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 20 20">
+              <path
+                clip-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                fill-rule="evenodd"></path>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

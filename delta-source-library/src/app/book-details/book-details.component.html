@@ -1,0 +1,33 @@
+<div
+  class="flex-auto flex flex-row items-center h-full items-center w-full p-4 bg-gray-100 overflow-y-auto bg-black">
+  <div class="flex flex-row items-center flex-auto p-6 bg-gray-50 rounded-md border-2 border-gray-200 shadow-lg">
+    <img [src]="sharedInfo.selected.book.imgUrl" alt="">
+    <div class="flex flex-col col-span-2 bg-gray-50 p-4 divide-y divide-gray-500">
+      <h2 [textContent]="sharedInfo.selected.book.title" class="text-2xl"></h2>
+      <p [textContent]="sharedInfo.selected.book.shortSummary" class="pt-6"></p>
+      <div class="flex flex-col mt-2 pt-1 font-medium">
+        <div class="flex flex-row">
+          <p [textContent]="'Author(s):'"></p>
+          <pre> </pre>
+          <div class="flex flex-row">
+            <span *ngFor="let author of sharedInfo.selected.book.authors; let last = last">
+              {{author.name.name}}
+              <ng-container *ngIf="!last">,</ng-container>
+            </span>
+          </div>
+        </div>
+        <p [textContent]="'isbn: ' + sharedInfo.selected.isbn"></p>
+        <div class="flex flex-row">
+          <p [textContent]="'Categories:'"></p>
+          <pre> </pre>
+          <div class="flex flex-row">
+            <span *ngFor="let category of sharedInfo.selected.book.categories; let last = last">
+              {{category}}
+              <ng-container *ngIf="!last">,</ng-container>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
